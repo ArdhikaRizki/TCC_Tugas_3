@@ -6,14 +6,13 @@ const sequelize = require('./config/database');
 const noteRoutes = require('./routes/noteRoutes');
 
 const app = express();
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = process.env.PORT || 8080;
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, 'views')));
-// prefix disini masseh 
+// backend hanya melayani API (tidak lagi menyajikan views statis)
 app.use('/api/notes', noteRoutes);
 
 app.get('/health', (_req, res) => {
@@ -23,9 +22,7 @@ app.get('/health', (_req, res) => {
 	});
 });
 
-app.get('/', (_req, res) => {
-	return res.sendFile(path.join(__dirname, 'views', 'index.html'));
-});
+// root tidak lagi menyajikan halaman HTML dari server backend
 
 const startServer = async () => {
 	try {
